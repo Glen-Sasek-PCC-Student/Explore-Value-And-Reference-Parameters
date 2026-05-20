@@ -33,16 +33,51 @@
 
 // ------------- CODE -------------
 #include <iostream>
+#include <chrono>
 
 using namespace std;
 
 // Function prototypes (if any)
+string appendCharacterByValue(string s, char c) {
+  s.push_back(c);
+  return s;
+}
+
+void appendCharacterByReference(string& s, char& c) {
+  s.push_back(c);
+}
 
 
 // Main function
 // https://en.cppreference.com/w/cpp/language/main_function.html
 int main(int argc, char* argv[]) {
-  cout << "Hello, World!" << endl;
+  string s = "S";
+  char c = 'C';
+  
+  for(int i = 1; i < 100; i++) {
+    cout << "Iteration: " << i << endl;
+
+    auto start_time = chrono::system_clock::now();
+
+    cout << "appendCharacterByValue" << endl;
+    string s2 = appendCharacterByValue(s, c);
+
+    auto duration = chrono::system_clock::now() - start_time;
+    auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
+    cout << "MICROSECONDS: " << microseconds << endl;
+    cout << endl;
+
+    start_time = chrono::system_clock::now();
+    cout << "appendCharacterByReference" << endl;
+    appendCharacterByReference(s, c);
+    duration = chrono::system_clock::now() - start_time;
+    microseconds = std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
+    cout << "MICROSECONDS: " << microseconds << endl;
+    cout << endl;
+    
+    s = s + s; // double size
+  } 
+
   return 0;
 }
 
